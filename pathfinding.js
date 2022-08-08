@@ -516,7 +516,7 @@ let recursiveDivision = ({x, y}, width, height) => {
         for (let i = y; i < y + height; ++i)
             if (i != vertical_hole_pos
                 && !(vertical_wall_pos == grid_start_pos.col && i == grid_start_pos.row)
-                && !(vertical_wall_pos == grid_end_pos.col && i == grid_end_pos.col))
+                && !(vertical_wall_pos == grid_end_pos.col && i == grid_end_pos.row))
             {
                 pathfinding_wall_weights_matrix[i][vertical_wall_pos] = 0;
                 setTimeout(() => toggleWall(pathfinding_tile_matrix[i][vertical_wall_pos], { row: i, col: vertical_wall_pos }), animation_delay);
