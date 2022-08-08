@@ -1,0 +1,930 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    font-size: 100%;
+    font: inherit;
+    color: inherit;
+    vertical-align: baseline;
+    text-decoration: none;
+
+}
+
+:root {
+    --sorting-color: rgb(65, 21, 48);
+    --pathfinding-color: rgb(209, 81, 45); 
+    --primary-font-color: rgb(245, 232, 228);
+    --secondary-font-color: rgb(245, 199, 169);
+    --background-color: rgb(250, 250, 250);
+    --background-font-color: rgb(33, 33, 33);
+    --background-font-color-faded: rgba(33, 33, 33, 0.1);
+    font-size: 16px;
+}
+
+html, body {
+    height: 100%;
+}
+
+.page {
+    height: 100%;
+    background-color: var(--background-color);
+}
+
+/* BANNER CSS ----------------------------------- */
+
+@keyframes anim-fade-away {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.fade-away {
+    animation: anim-fade-away 1.2s ease-in   0s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.banner {
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    color: var(--secondary-font-color);
+    z-index: 10;
+}
+
+.banner > a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    font-size: 2em;
+    transition: height 0.5s ease-out, font-size 0.5s ease-out;
+}
+
+.banner > a * {
+    opacity: 0.7;
+    transition: opacity 0.2s ease-out;
+}
+
+.banner > a > span {
+    display: block;
+    margin: auto;
+    margin-bottom: 10vh;
+    opacity: 0.9;
+}
+
+.banner > a > div {
+    display: flex;
+    margin: auto;
+    margin-top: 0px;
+    width: 200px;
+    aspect-ratio: 2 / 1;
+}
+
+a:hover {
+    cursor: default;
+}
+
+a:hover:not(.banner-active) {
+    cursor: pointer;
+}
+
+.banner > a:hover,
+.banner > .banner-active {
+    height: 120%;
+    font-size: 3em;
+}
+
+.banner > a:hover > span,
+.banner > .banner-active > span {
+    color: var(--primary-font-color);
+}
+
+.banner > a:hover *,
+.banner > .banner-active * {
+    opacity: 1;
+}
+
+.banner-inactive {
+    height: 0px !important;
+    pointer-events: none;
+}
+
+.banner-active {
+    height: 100vh !important;
+    pointer-events: none;
+}
+
+.sorting {
+    background-color: var(--sorting-color);
+}
+
+.sorting:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    height: 0px;
+    box-shadow: 0px 0px 10px 10px var(--sorting-color);
+    transition: top 0.5s 0.2s, opacity 0.2s;
+    opacity: 0;
+    z-index: 2;
+}
+
+.sorting:hover:after {
+    top: 0px;
+    opacity: 1;
+}
+
+.sorting-container > div {
+    width: 100%;
+    margin: auto 2%;
+    margin-bottom: 0px;
+    border: 2px solid var(--secondary-font-color);
+}
+
+.sorting-container > div:nth-child(1) {
+    height: 40%;
+    transition: transform 0.5s ease-in-out, opacity 0.2s ease-out;
+}
+
+.sorting-container > div:nth-child(2) {
+    height: 80%;
+    transition: transform 1s ease-in-out, opacity 0.2s ease-out;
+}
+
+.sorting-container > div:nth-child(3) {
+    height: 60%;
+    transition: transform 0.5s ease-in-out, opacity 0.2s ease-out;
+}
+
+.sorting-container > div:nth-child(4) {
+    height: 10%;
+    transition: transform 0.75s ease-in-out, opacity 0.2s ease-out;
+}
+
+.sorting-container > div:nth-child(5) {
+    height: 20%;
+    transition: transform 0.75s ease-in-out, opacity 0.2s ease-out;
+}
+
+.sorting-container > div:nth-child(6) {
+    height: 40%;
+    transition: transform 0.5s ease-in-out, opacity 0.2s ease-out;
+}
+
+.sorting-container > div:nth-child(7) {
+    height: 90%;
+}
+
+.sorting:hover > .sorting-container > div,
+.banner-active > .sorting-container > div {
+    border: 2px solid var(--primary-font-color);
+}
+
+.banner-active > .sorting-container > div:nth-child(1) {
+    transform: translateX(277.78%);
+}
+
+.banner-active > .sorting-container > div:nth-child(2) {
+    transform: translateX(555.56%);
+}
+
+.banner-active > .sorting-container > div:nth-child(3) {
+    transform: translateX(277.78%);
+}
+
+.banner-active > .sorting-container > div:nth-child(4) {
+    transform: translateX(-416.67%);
+}
+
+.banner-active > .sorting-container > div:nth-child(5) {
+    transform: translateX(-416.67%);
+}
+
+.banner-active > .sorting-container > div:nth-child(6) {
+    transform: translateX(-277.78%);
+}
+
+.pathfinding {
+    background-color: var(--pathfinding-color);
+}
+
+.pathfinding:after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    height: 0;
+    box-shadow: 0px 0px 10px 10px var(--pathfinding-color);
+    transition: bottom 0.5s, opacity 0.2s;
+    opacity: 0;
+    z-index: 2;
+}
+
+.pathfinding:hover:after {
+    bottom: 0px;
+    opacity: 1;
+}
+
+.pathfinding-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pathfinding-container > div {
+    position: relative;
+    display: flex;
+    width: 13%;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--secondary-font-color);
+    box-shadow: rgba(0, 0, 0, 0.5) 1.95px 1.95px 2.6px;
+}
+
+.pathfinding-container > div:after {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: var(--secondary-font-color);
+    transition-property: top, left, width, height;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+    z-index: 2;
+}
+
+.pathfinding-container > div:nth-child(16):after {
+    transition-delay: 0.1s;
+}
+
+.pathfinding-container > div:nth-child(17):after {
+    transition-delay: 0.2s;
+}
+
+.pathfinding-container > div:nth-child(18):after {
+    transition-delay: 0.3s;
+}
+
+.pathfinding-container > div:nth-child(19):after {
+    transition-delay: 0.4s;
+}
+
+.pathfinding-container > div:nth-child(20):after {
+    transition-delay: 0.5s;
+}
+
+.pathfinding-container > div:nth-child(21):after {
+    transition-delay: 0.6s;
+}
+
+.pathfinding-container > div:nth-child(14):after {
+    transition-delay: 0.7s;
+}
+
+.pathfinding-container > div > svg {
+    width: 50%;
+    margin: auto;
+}
+
+.banner-active > .pathfinding-container > div:nth-child(14):after,
+.banner-active > .pathfinding-container > div:nth-child(15):after,
+.banner-active > .pathfinding-container > div:nth-child(16):after,
+.banner-active > .pathfinding-container > div:nth-child(17):after,
+.banner-active > .pathfinding-container > div:nth-child(18):after,
+.banner-active > .pathfinding-container > div:nth-child(19):after,
+.banner-active > .pathfinding-container > div:nth-child(20):after,
+.banner-active > .pathfinding-container > div:nth-child(21):after {
+    top: 1px;
+    left: 1px;
+    width: 99%;
+    height: 99%;
+}
+
+@media screen and (min-width: 400px) {
+    .banner > a {
+        font-size: 3em;
+    }
+
+    .banner > a > div {
+        width: 40%;
+    }
+
+    .banner > a:hover,
+    .banner > .banner-active {
+        font-size: 4em;
+    }
+}
+
+@media only screen and (min-width:  1000px) {
+    .banner {
+        flex-direction: row;
+    }
+
+    .banner > a {
+        font-size: 5vw;
+        transition: width 0.5s ease-out, font-size 0.5s ease-out;
+    }
+
+    .banner > a > div {
+        width: 25vw;
+    }
+
+    .banner > a:hover,
+    .banner > .banner-active {
+        height: 100%;
+        width: 120%;
+        font-size: 7vw;
+    }
+
+    .banner-inactive {
+        height: 100% !important;
+        width: 0px !important;
+    }
+    
+    .banner-active {
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    .sorting:after {
+        height: 100%;
+        width: 0;
+        top: 0;
+        left: 10px;
+        transition: left 0.5s 0.2s, opacity 0.2s;
+    }
+
+    .sorting:hover:after {
+        left: 0px;
+    }
+
+    .pathfinding:after {
+        height: 100%;
+        width: 0;
+        bottom: initial;
+        left: initial;
+        top: 0;
+        right: 10px;
+        transition: right 0.5s 0.2s, opacity 0.2s;
+    }
+
+    .pathfinding:hover:after {
+        right: 0px;
+    }
+}
+
+/* END OF BANNER -------------------------------- */
+
+main {
+    display: inline-block;
+    margin-top: 50px;
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    align-items: center;
+    color: var(--background-font-color);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    z-index: 9;
+}
+
+/* PATHFINDING ---------------------------------- */
+
+.pathfinding-nav {
+    font-size: 1em;
+    background-color: var(--pathfinding-color);
+}
+
+.pathfinding-nav > div {
+    display: flex;
+    height: 100%;
+    justify-content: space-around;
+    margin: 0px 10px;
+    list-style: none;
+}
+
+.pathfinding-nav > div:first-child{
+    margin-right: auto;
+    width: 100%;
+}
+
+.pathfinding-nav > div:last-child {
+    margin-left: auto;
+    width: 100%;
+}
+
+.circular-toggler {
+    position: relative;
+    height: 80%;
+    aspect-ratio: 1 / 1;
+    margin: auto;
+    border: 3px solid var(--secondary-font-color);
+    border-radius: 50%;
+    color: var(--secondary-font-color);
+    background-color: var(--pathfinding-color);
+    transition: color 0.2s ease-out, border 0.2s ease-in-out;
+}
+
+.circular-toggler:hover {
+    cursor: pointer;
+    border: 3px solid var(--primary-font-color);
+    color: var(--primary-font-color);
+}
+
+.circular-toggler:disabled {
+    cursor: auto;
+    border: 3px solid var(--background-font-color);
+    color: var(--background-font-color);
+}
+
+.circular-toggler > svg {
+    position: absolute;
+    height: 40%;
+    top: 30%;
+    left: 30%;
+    opacity: 1;
+    transition-property: height, top, left, opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+}
+
+@keyframes anim-disappear-to-right {
+    from { height: 40%; top: 30%; left: 30%; opacity: 1; }
+    to { height: 0; top: 50%; left: 100%; opacity: 0; }
+}
+
+.circular-toggler:not([class*="toggled"]) > svg:last-child,
+.circular-toggler.toggled > svg:first-child {
+    height: 0;
+    top: 50%;
+    left: 0px;
+    opacity: 0;
+    animation: anim-disappear-to-right 0.5s ease-in-out;
+}
+
+.circular-toggler > svg:first-child {
+    transform: translateX(3px);
+}
+
+.toggle-button {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 80%;
+    max-width: 110px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 10px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);    
+    border: 1px solid var(--background-color);
+    border-radius: 15px;
+}
+
+.toggle-button > div {
+    transition: opacity 0.2s ease-in-out;
+    opacity: 0;
+}
+
+.toggle-button.switched > div:first-child,
+.toggle-button:not([class$="switched"]) > div:last-child {
+    opacity: 1;
+}
+
+.toggle-button:hover {
+    cursor: pointer;
+}
+
+.toggle-button:after {
+    position: absolute;
+    content: "";
+    height: 90%;
+    width: 48%;
+    top: 5%;
+    left: 2%;
+    background-color: var(--pathfinding-color);
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 4px;
+    transition: left 0.2s ease-in-out;
+    border-radius: 12px;
+    z-index: 3;
+}
+
+.toggle-button.switched:after {
+    left: 50%;
+}
+
+.pathfinding-nav > div > .toggle-button > div {
+    position: relative;
+    height: 70%;
+    max-height: 35px;
+    aspect-ratio: 1 / 1;
+    background-color: var(--background-color);
+    border: 1px solid var(--background-font-color-faded);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.drop-menu {
+    position: relative;
+    display: flex;
+    color: var(--secondary-font-color);
+}
+
+.drop-menu > button {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    align-items: center;
+    background-color: inherit;
+}
+
+.drop-menu > button > span {
+    display: none;
+    white-space: nowrap;
+}
+
+.drop-menu > button > svg {
+    height: 70%;
+}
+
+.drop-menu > button > .broom {
+    height: 60%;
+}
+
+.drop-menu > div {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    height: 0px;
+    top: 60px;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: var(--pathfinding-color);
+
+    /* Trick to center oversized div */
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.pathfinding-nav > div:first-child > .drop-menu:first-child > div {
+    transform: translateX(-10vw);
+}
+
+.drop-menu > div > button {
+    padding: 10px;
+    background-color: inherit;
+    white-space: nowrap;
+}
+
+.drop-menu > button:hover,
+.drop-menu > div > button:hover {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--primary-font-color);
+}
+
+.drop-menu:focus-within > button {
+    font-weight: 500;
+    color: var(--primary-font-color);
+}
+
+.drop-menu:focus-within > div {
+    height: initial;
+}
+
+.drop-menu > button:disabled {
+    cursor: auto;
+    font-weight: inherit;
+    color: var(--background-font-color);
+}
+
+.speed-button {
+    height: 100%;
+    margin-left: 5px;
+    background-color: inherit;
+}
+
+.speed-button:hover {
+    cursor: pointer;
+}
+
+.speed-button > svg {
+    display: block;
+    height: 70%;
+    pointer-events: none;
+    margin: auto;
+}
+
+.speed-button > svg > path {
+    fill: var(--background-color);
+}
+
+.speed-button > svg > g {
+    color: var(--background-font-color);
+}
+
+.speed-button >svg > g > path:last-child {
+    transform-origin: 50% 70%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.speed-button.fast > svg > g > path:last-child {
+    transform: rotate(28deg) scale(0.8);
+}
+
+.speed-button.very-fast > svg > g > path:last-child {
+    transform: rotate(56deg) scale(0.8);
+}
+
+.speed-button.slow > svg > g > path:last-child {
+    transform: rotate(-28deg) scale(0.8);
+}
+
+.speed-button.very-slow > svg > g > path:last-child {
+    transform: rotate(-56deg) scale(0.8);
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.legend > div {
+    display: flex;
+    padding: 5px;
+    margin: 0 10px;
+    align-items: center;
+}
+
+.legend > div > div {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    background-color: var(--background-color);
+    border: 1px solid var(--background-font-color-faded);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-right: 10px;
+}
+
+.legend > div > span {
+    font-size: 1em;
+    color: var(--background-font-color);
+    white-space: nowrap;
+}
+
+@keyframes anim-grow {
+    from { left: 50%; top: 50%; width: 0%; }
+    to { left: 25%; top: 25%; width: 50%; }
+}
+
+*[class^="weight"] > svg > text {
+    text-anchor: middle;
+    font-size: 250px;
+    color: var(--background-color);
+}
+
+*[class^="weight"] > svg {
+    animation: anim-grow 0.2s ease-out;
+}
+
+.pathfinding-table {
+    width: 100%;
+    margin: 50px auto 0px;
+    pointer-events: none;
+}
+
+.pathfinding-table > tr {
+    display: flex;
+    justify-content: center;
+}
+
+.pathfinding-table > tr > td {
+    position: relative;
+    width: 100%;
+    max-width: 35px;
+    aspect-ratio: 1 / 1;
+    opacity: 0;
+    background-color: var(--background-color);
+    /*background-color: #ECF0F1;/* ? #ECF0F1 */
+    border: 1px solid var(--background-font-color-faded);
+    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    pointer-events: auto;
+}
+
+.pathfinding-table > tr > td > svg,
+.legend > div > div > svg,
+.pathfinding-nav > div > .toggle-button > div > svg {
+    position: absolute;
+    width: 60%;
+    left: 20%;
+    top: 20%;
+    pointer-events: none;
+    z-index: 1;
+    color: var(--background-font-color);
+}
+
+.pathfinding-table > tr > .start > svg,
+.legend > div > .start > svg {
+    top: 25%;
+}
+
+.pathfinding-table > tr > td:after,
+.legend > div > div:after,
+.pathfinding-nav > div > .toggle-button > div:after {
+    position: absolute;
+    content: "";
+    height: 0px;
+    width: 0px;
+    top: 50%;
+    left: 50%;
+    background-color: var(--background-font-color);
+    transition-property: left, top, width, height;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+@keyframes anim-pop-out {
+    0% { height: 0; width: 0; top: 50%; left: 50%; }
+    70% { height: 120%; width: 120%; top: -10%; left: -10%; }
+    100% { height: 100%; width: 100%; top: 0; left: 0; }
+}
+
+.pathfinding-table > tr > .wall:after,
+.legend > div > .wall:after,
+.pathfinding-nav > div > .toggle-button > .wall:after {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    animation: anim-pop-out 0.3s ease-in-out;
+}
+
+.pathfinding-table > tr > .searched:after,
+.legend > div > .searched:after {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: var(--pathfinding-color);
+    animation: anim-pop-out 0.3s ease-in-out;
+}
+
+.pathfinding-table > tr > .path:after,
+.legend > div > .found:after {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: var(--secondary-font-color);
+}
+
+.draging {
+    position: fixed;
+    /*transition: top 5s ease-in-out, left 5s ease-in-out;*/
+}
+
+
+@media screen and (min-width: 900px) {
+    .pathfinding-nav {
+        font-size: 1.2em;
+    }
+
+    .drop-menu > button > span {
+        display: initial;
+    }
+
+    .drop-menu > button > svg {
+        margin-left: 8px;
+    }
+
+    .pathfinding-nav > div:first-child > .drop-menu:first-child > div {
+        transform: translateX(-50%);
+    }
+
+    .legend {
+        margin-top: 30px;
+    }
+
+    .legend > div > span {
+        font-size: 1.2em;
+    }
+}
+
+/* END OF PATHFINDING --------------------------- */
+
+/* SORTING -------------------------------------- */
+
+.under-construction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--sorting-color);
+}
+
+.under-construction > div {
+    margin-top: auto;
+    margin-bottom: 10%;
+}
+
+.under-construction > div > h1 {
+    display: block;
+    margin-bottom: 10%;
+    padding: 0px 5px;
+    text-align: center;
+    font-size: 10vw;
+    font-weight: 500;
+    color: var(--primary-font-color);
+}
+
+.under-construction > div > h3 {
+    display: block;
+    font-size: 6vw;
+    padding: 0px 30px;
+    color: var(--secondary-font-color);
+}
+
+.under-construction > div > h3 > a {
+    text-decoration: underline;
+    color: var(--primary-font-color);
+    white-space: nowrap;
+}
+
+.under-construction > svg {
+    width: 90%;
+    margin-bottom: auto;;
+}
+
+
+@media screen and (min-width: 500px) {
+    .under-construction > div > h1 {
+        font-size: 2.5em;
+    }
+    
+    .under-construction > div > h3 {
+        font-size: 1.5em;
+        padding: 0 15%;
+    }
+
+    .under-construction > svg {
+        width: 60%;
+        max-width: 500px;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .under-construction {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .under-construction > div {
+        margin-bottom: auto;
+    }
+
+    .under-construction > div > h1 {
+        font-size: 3em;
+        white-space: nowrap;
+    }
+    
+    .under-construction > div > h3 {
+        font-size: 2em;
+        padding: 0px 10%;
+    }
+
+    .under-construction > svg {
+        width: 70%;
+        max-width: 800px;
+        margin-top: auto;
+        margin-right: 50px;
+    }
+}
+
+/* END OF SORTING ------------------------------- */
