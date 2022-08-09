@@ -619,6 +619,10 @@ nav {
     color: var(--background-font-color);
 }
 
+.drop-menu > button:disabled + div {
+    height: 0px;
+}
+
 .speed-button {
     height: 100%;
     margin-left: 5px;

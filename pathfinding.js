@@ -397,19 +397,17 @@ let pathfind = () => {
     path.forEach((pos) => setSearchedORPath(pos, false));
 };
 // Helper funtions
+let grabAdjacentSquares = ({row, col}) => {
+    return [
+        { row: row - 1, col: col },
+        { row: row + 1, col: col },
+        { row: row, col: col - 1 },
+        { row: row, col: col + 1 }
+    ];
+};
+let isLegalSquare = ({row, col}) => row >= 0 && row < grid_num_rows && col >= 0 && col < grid_num_cols;
 let grabAdjacentSearchable = (pos) => {
-    let adj = [];
-
-    if (pos.row > 0 && pathfinding_wall_weights_matrix[pos.row - 1][pos.col])
-        adj.push({ row: pos.row - 1, col: pos.col });
-    if (pos.row + 1 < grid_num_rows && pathfinding_wall_weights_matrix[pos.row + 1][pos.col])
-        adj.push({ row: pos.row  + 1, col: pos.col });
-    if (pos.col > 0 && pathfinding_wall_weights_matrix[pos.row][pos.col - 1])
-        adj.push({ row: pos.row, col: pos.col - 1 });
-    if (pos.col + 1 < grid_num_cols && pathfinding_wall_weights_matrix[pos.row][pos.col + 1])
-        adj.push({ row: pos.row, col: pos.col + 1 });
-
-    return adj;
+    return grabAdjacentSquares(pos).filter((pos) => isLegalSquare(pos) && pathfinding_wall_weights_matrix[pos.row][pos.col]);
 };
 let setSearchedORPathAnimated = (pos, searched) => {
     setTimeout(() => setSearchedORPathNonAnimated(pos, searched), animation_delay);
@@ -458,7 +456,7 @@ let resetWallWeightTiles = () => {
     );
 
     pathfinding_wall_weights_matrix.forEach((row) => row.fill(1));
-}
+};
 
 // Maze algorithms
 let recursiveDivisionCaller = () => recursiveDivision({x: 0, y: 0}, grid_num_cols, grid_num_rows);
@@ -529,6 +527,43 @@ let recursiveDivision = ({x, y}, width, height) => {
         recursiveDivision({x: vertical_wall_pos + 1, y: y}, x + width - vertical_wall_pos - 1, height);
     }
 };
+let randomizedPrimsAlgorithm = () => {
+    pathfinding_tile_matrix.forEach((row, row_idx) => row.forEach((element, col_idx) => {
+        toggleWall(element, { row: row_idx, col: col_idx });
+    }));
+    animation_delay += animation_delay_increment;
+    pathfinding_wall_weights_matrix[grid_end_pos.row][grid_end_pos.col] = 0;
+
+    let getFrontierNeighbors = ({row, col}, neighbor = false) => [
+            { row: row - 2, col: col },
+            { row: row + 2, col: col },
+            { row: row, col: col - 2 },
+            { row: row, col: col + 2 }
+        ].filter((pos) => isLegalSquare(pos) && pathfinding_wall_weights_matrix[pos.row][pos.col] == neighbor);
+
+    let wall_list = getFrontierNeighbors(grid_start_pos);
+    while (wall_list.length)
+    {
+        const wall_random_idx = Math.floor(Math.random() * wall_list.length);
+        const wall_pos = wall_list[wall_random_idx];
+        wall_list.splice(wall_random_idx, 1);
+
+        if (pathfinding_wall_weights_matrix[wall_pos.row][wall_pos.col])
+            continue;
+
+        const neighbors = getFrontierNeighbors(wall_pos, true);
+        const neighbor_random_idx = Math.floor(Math.random() * neighbors.length);
+        const neighbor_pos = neighbors[neighbor_random_idx];
+        const middle_pos = { row: (neighbor_pos.row + wall_pos.row) / 2, col: (neighbor_pos.col + wall_pos.col) / 2 }
+        if (!pathfinding_wall_weights_matrix[middle_pos.row][middle_pos.col])
+            setTimeout(() => toggleWall(pathfinding_tile_matrix[middle_pos.row][middle_pos.col], middle_pos), animation_delay);
+        setTimeout(() => toggleWall(pathfinding_tile_matrix[wall_pos.row][wall_pos.col], wall_pos), animation_delay);
+        animation_delay += animation_delay_increment;
+        pathfinding_wall_weights_matrix[middle_pos.row][middle_pos.col] = pathfinding_wall_weights_matrix[wall_pos.row][wall_pos.col] = 1;
+
+        wall_list = wall_list.concat(getFrontierNeighbors(wall_pos));
+    }
+};
 let createMaze = (maze_algorithm) => {
     algorithms_menu_button.disabled = true;
     mazes_menu_button.disabled = true;
@@ -550,7 +585,7 @@ let createMaze = (maze_algorithm) => {
             start_reset_button.disabled = false;
         startMouseListeners();
     }, animation_delay);
-}
+};
 
 // Nav
 let start_reset_button = document.getElementById("start-reset-button");
@@ -608,7 +643,8 @@ algorithm_button_array.forEach(({ algorithm, button }) => {
     });
 });
 let maze_algorithm_button_array = [
-    { algorithm: recursiveDivisionCaller, button: document.getElementById("recursive-divison-button")},
+    { algorithm: recursiveDivisionCaller, button: document.getElementById("recursive-divison-button") },
+    { algorithm: randomizedPrimsAlgorithm, button: document.getElementById("randomized-prims-algorithm") }
 ]
 maze_algorithm_button_array.forEach(({ algorithm, button }) => {
     button.addEventListener("click", () => {
