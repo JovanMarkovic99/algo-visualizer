@@ -386,7 +386,6 @@ let dijkstrasAlgorithm = (start, end) => {
         });
     }
 
-    console.log("OUT")
     return deconstructPath(start, end, path_map);
 };
 let pathfind = () => {
@@ -563,6 +562,8 @@ let randomizedPrimsAlgorithm = () => {
 
         wall_list = wall_list.concat(getFrontierNeighbors(wall_pos));
     }
+
+    pathfinding_wall_weights_matrix[grid_end_pos.row][grid_end_pos.col] = 1;
 };
 let createMaze = (maze_algorithm) => {
     algorithms_menu_button.disabled = true;
