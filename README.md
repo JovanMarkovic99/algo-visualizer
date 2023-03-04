@@ -1,9 +1,7 @@
 # Algo-Visualizer
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Welcome to Algo-Visualizer! This is a web application that lets you visualize popular [pathfinding](#pathfinding) and [sorting](#sorting) algorithms.<br/>
-You can access the website through https://jovanmarkovic99.github.io/algo-visualizer/.
-
+Welcome to Algo-Visualizer! This is a web application that lets you visualize popular [pathfinding](#pathfinding) and [sorting](#sorting) algorithms. You can access the website through https://jovanmarkovic99.github.io/algo-visualizer/.
 
 ## Pathfinding
 
