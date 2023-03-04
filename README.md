@@ -1,52 +1,33 @@
 # Algo-Visualizer
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A webpage for visualizing common [pathfinding](#pathfinding) and [sorting](#sorting) algorithms\
-The website can be viewed at https://jovanmarkovic99.github.io/algo-visualizer/
+Welcome to Algo-Visualizer! This is a web application that lets you visualize popular [pathfinding](#pathfinding) and [sorting](#sorting) algorithms.<br/>
+You can access the website through https://jovanmarkovic99.github.io/algo-visualizer/.
 
-* [Pathfinding](#pathfinding)
-  * [Navigation](#navigation)
-    * [Start & End point](#start--end-point)
-    * [Walls & Weights](#walls--weights)
-    * [Animation speed](#animation-speed)
-  * [Pathfinding algorithms](#pathfinding-algorithms)
-    * [Depth-first search](#depth-first-search)
-    * [Breadth-first search](#breadth-first-search)
-    * [A* search algorithm](#a-search-algorithm)
-    * [Dijkstra's search algorithm](#dijkstras-algorithm)
-  * [Maze algorithms](#maze-algorithms)
-    * [Recursive division](#recursive-division)
-* [Sorting](#sorting)
 
-# Pathfinding
+## Pathfinding
 
-The pathfinding section contains a customizable grid appropriate to the screen size.\
-After customizing and selecting the algorithm you wish to visualize, click on the play button in the middle of the navbar.
+In the pathfinding section, you can find a customizable grid that fits your screen size.<br/>
+After selecting the algorithm you wish to visualize, simply click on the play button in the center of the navigation bar.
 
-## Navigation
+### Navigation
 
-###### Start & End point
+You can easily select the start and end point of your path by clicking and dragging them anywhere on the grid. The path will update instantly even if you move them during the visualization process.<br/>
+<br/>
+You can add or remove walls and weights of different costs by left-clicking on a tile. You can also change between walls and weights by toggling the button on the top-right corner of the navigation bar. Adjusting the cost of the weights is done using the scroll wheel. To clear the walls and weights, click on the broom button.<br/>
+<br/>
+The animation speed can be controlled by clicking on the gauge button on the top-right corner of the navigation bar.
 
-The starting and ending point can be click-and-dragged to anywhere on the grid. If the moving is done after the visualization,
-the path will update instantly.
+### Pathfinding algorithms
 
-###### Walls & Weights
+There are four pathfinding algorithms available for you to choose from:
 
-**Walls** and **weights** of different costs can be added/removed to a tile by **left-clicking on the tile**.
-After visualizing, the path will update instantly on change.
+* [Depth-first search](https://en.wikipedia.org/wiki/Depth-first_search)
+* [Breadth-first search](https://en.wikipedia.org/wiki/Breadth-first_search)
+* [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm)
+* [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
 
-Changing between walls and weights can be done by toggling the top-right button in the navbar.
-
-Changing the **cost of the weights** can be done with the **scroll wheel**.
-
-Clearing the walls & weights can be done by clicking on the broom button.
-<br><br>
-
-###### Animation speed
-
-You can control how fast the algorithms are flagging the searched tiles by clicking on the gauge button on the top-right of the navbar
-<br>
-
-## Pathfinding algorithms
+The table below shows which algorithm is weighted and if it guarantees the shortest path:
 
 | Algorithm | Weighted | Shortest path |
 |---|---|---|
@@ -55,43 +36,13 @@ You can control how fast the algorithms are flagging the searched tiles by click
 | A* search algorithm | Yes | Yes |
 | Dijkstra's algorithm | Yes | Yes |
 
-<br>
+### Maze algorithms
 
-###### Depth-first search
+For a more interesting path visualization, you can use various wall-creating algorithms to generate mazes.
 
-[Depth-first search](https://en.wikipedia.org/wiki/Depth-first_search) is a **non-weighted** recursive algorithm that processes nodes in one direction until exhaustion and then backtracks when no searchable nodes are left in that direction.
-It **doesn't guarantee rante the shortest path**.
-<br><br>
+* Recursive division
+* Randomized Prim's algorithm
 
-###### Breadth-first search
+## Sorting
 
-[Breadth-first search](https://en.wikipedia.org/wiki/Breadth-first_search) is a **non-weighted** algorithm that processes nodes orderly, the closest ones first, utilizing a queue.
-It **guarantees the shortest path**.
-<br><br>
-
-###### A* search algorithm
-
-[A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) is a **weighted** algorithm that processes nodes in an orderly fashion,
-using a priority queue. The priority in the queue is determined by the sum of the already traveled distance and some heuristic function 
-(e.g. absolute distance from the end). It **guarantees the shortest path**.
-<br><br>
-
-###### Dijkstra's algorithm
-
-[Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) is a **weighted** algorithm that **determines the shortest path**
-from a starting node to every other node. It searches every node while continuously updating the shortest path to all the neighboring nodes.
-<br>
-
-## Maze algorithms
-
-Various wall-creating algorithms for interesting path visualizations.
-<br><br>
-
-###### Recursive division
-
-[Recursive division](https://weblog.jamisbuck.org/2011/1/12/maze-generation-recursive-division-algorithm) generates a maze by creating a random valid wall
-somewhere along the shorter axis, repeating the process on the newly created sections.
-
-# Sorting
-
-The sorting section is currently under construction, please check back later.
+The sorting section is currently under construction, but will be available soon. Please check back later for updates.
