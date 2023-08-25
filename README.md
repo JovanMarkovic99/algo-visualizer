@@ -31,7 +31,7 @@ The table below shows which algorithm is weighted and if it guarantees the short
 |---|---|---|
 | Depth-first search | No | No |
 | Breadth-first search | No | Yes |
-| A* search algorithm | Yes | Yes |
+| A* search algorithm | Yes | No (Yes, with a consistent heuristic) |
 | Dijkstra's algorithm | Yes | Yes |
 
 ### Maze algorithms
